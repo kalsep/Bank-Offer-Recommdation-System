@@ -7,6 +7,7 @@ def scrap_pnb_offers(url):
     }
     heading_content = soup.find("div", class_="cotnent-outer")
     merchant_name = heading_content.text.strip().split("-")[0].strip()
+    merchant_name = merchant_name.replace("Offer 1","").replace("Offer 2","").replace("Offer 3","").replace("Offer 4","")
     offer_title = heading_content.text.strip().split("\n")[0].strip()
     detailed_offer_text = (
         soup.find("div", class_="description-widget ls-widget")
@@ -71,7 +72,7 @@ def get_links(base_url):
     return links
 
 
-if __name__ == "__main__":
+def run_pnb_offers():
     base_url = "https://offers.pnbcards.in/#listing"
     links = get_links(base_url)
     final_data = []
@@ -81,3 +82,4 @@ if __name__ == "__main__":
     df.to_excel(
         os.path.join(base_directory, "data", "pnb_offers.xlsx"), engine="openpyxl"
     )
+    return df

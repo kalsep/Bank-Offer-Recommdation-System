@@ -1,15 +1,15 @@
-from config import *
+from config import *  # noqa: F403
 
 def process_final_df(data):
     try:
-        print("Inside final df creation")
+        # print("Inside final df creation")
         data_for_df = []
-        brand_category_dict_lower = {key.lower(): value for key, value in brand_category_dict.items()}
+        brand_category_dict_lower = {key.lower(): value for key, value in brand_category_dict.items()}  # noqa: F405
         for index, row in data.iterrows():
             brand_url = row["Brand url"]
-            print(brand_url)
+            # print(brand_url)
             # category = row["Category"]
-            brand_url_response = get_soup(brand_url)
+            brand_url_response = get_soup(brand_url)  # noqa: F405
             merchant_name, offer_text, promo_code, Offer_redumption_mode,redeem_link = (
                 process_and_scrap_stnd_char_bank_offer_df(brand_url_response)
             )
@@ -34,7 +34,7 @@ def process_final_df(data):
                 "If offline, cities": None,
             }
             data_for_df.append(data)
-            print("Appended")
+            # print("Appended")
         return pd.DataFrame(data_for_df, columns=columns_to_use)
     except Exception:
         df = pd.DataFrame(data_for_df, columns=columns_to_use)
@@ -49,9 +49,9 @@ def process_and_scrap_stnd_char_bank_offer_df(response):
             .find("li", class_="breadcrumb-item active")
             .text
         )
-        redeemable_status_html_block = response.find(
-            "div", class_="productPageBoxNew px-3"
-        )
+        # redeemable_status_html_block = response.find(
+        #     "div", class_="productPageBoxNew px-3"
+        # )
         # if redeemable_status_html_block:
         #     cant_use_online = redeemable_status_html_block.find("li", class_="dont")
         #     if cant_use_online:
@@ -127,17 +127,19 @@ def get_Stnd_char_bank_offer_df():
     return df
 
 
-if __name__ == "__main__":
+def run_scb_offers():
     # print(offer_links_df)
     if os.path.exists("stb.xlsx"):
         print("File Avaialble")
         offer_links_df = pd.read_excel("stb.xlsx")
         final_df = process_final_df(offer_links_df)
         final_df.to_excel(os.path.join(base_directory, "data", "standard_charted_bank_offers.xlsx"))
+        return final_df
     else:
         print("File not Avaialble")
         offer_links_df = get_Stnd_char_bank_offer_df()
         offer_links_df.to_excel("stb.xlsx",engine='openpyxl')
         final_df = process_final_df(offer_links_df)
         final_df.to_excel(os.path.join(base_directory, "data", "standard_charted_bank_offers.xlsx"))
+        return final_df
     
