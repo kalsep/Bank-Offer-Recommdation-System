@@ -13,23 +13,6 @@ def get_df():
     ).drop("Unnamed: 0", axis=1)
     return dataframe
 
-# @st.cache_resource
-# def filter_data(search_query):
-#     try:
-#         df = get_df()
-#         if search_query:
-#             filtered_df = df[df["Merchant Name"]==search_query]
-#             if filtered_df.empty():
-#                 filtered_df = df[df.apply(lambda row: search_query.lower() in " ".join(map(str, row)).lower(), axis=1)]
-            
-#             if filtered_df.empty:
-#                 return None
-#         else:
-#             return None  # Return None if no filter text is available
-#         return filtered_df.sample(n=1).index if not filtered_df.empty else None
-#     except Exception as e:
-#         st.error(f"An error occurred while filtering data: {e}")
-#         return None
 
 @st.cache_resource
 def filter_data(search_query):
