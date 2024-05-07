@@ -30,7 +30,7 @@ if search_text != None and recom_button:
             },
             inplace=True,
         )
-        recommended_offers.sample(frac = 1)
+        recommended_offers.sample(frac=1)
 
         with st.container():
             col2.dataframe(
